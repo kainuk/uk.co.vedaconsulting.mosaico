@@ -73,12 +73,10 @@ function civicrm_api3_mosaico_template_get($params) {
     $metaData = json_decode($getresult['values'][0]['metadata'], TRUE);
     $baseTemplateURL = $metaData['template'];
 
-    $baseURL = CRM_Utils_System::baseURL();
-
     if (_civicrm_api3_mosaico_template_getDomainFrom($baseTemplateURL)) {
       $urlParts = parse_url($baseTemplateURL);
       $templatePath = $urlParts['path'];
-      $currentURL = CRM_Utils_System::baseURL() . $templatePath;
+      $currentURL =  \Civi::paths()->getVariable('cms.root', 'url') . $templatePath;
     } else {
       $currentURL = $baseTemplateURL;
     }
@@ -167,7 +165,7 @@ function civicrm_api3_mosaico_template_replaceurls($params) {
   if (!preg_match('/' . preg_quote('/', '/') . '$/', $params['from_url'])) {
     $params['from_url'] .= '/';
   }
-  
+
   // Ensure the `to_url` ends with a slash
   if (!preg_match('/' . preg_quote('/', '/') . '$/', $params['to_url'])) {
     $params['to_url'] .= '/';
